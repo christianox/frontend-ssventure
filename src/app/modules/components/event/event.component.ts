@@ -25,6 +25,9 @@ export class EventComponent implements OnInit {
  }
 
  ngOnInit() {
+   if (this.userSession === null) {
+     this.router.navigate(['/']);
+   }
    this.userSession = JSON.parse(this.userSession)[0];
    this.onLoadEvents();
    this.initializeForm();
@@ -34,14 +37,12 @@ export class EventComponent implements OnInit {
  onLoadEvents(): void {
    this.eventService.getAllEvent().subscribe((res) => {
      this.eventList = res;
-     console.log(res)
    });
  }
 
  onLoadEventsParticipant(): void {
    this.eventService.getAllEventParticipant(this.userSession.id).subscribe((res) => {
      this.eventUserParticipate = res;
-     console.log(res)
    })
  }
 
@@ -93,9 +94,10 @@ export class EventComponent implements OnInit {
 
    this.eventService.addEvent(data).subscribe((res) => {
      if (res.message === "Evento registrado") {
-       alert(res.message)
-       this.router.navigate(['/event']);
-       window.location.reload();
+       this.messageService.add({ severity: 'success', summary: 'Success', detail: res.message });
+       setTimeout(() => {
+         window.location.reload();
+         }, 1000);
        this.showForm = false;
      } else {
        alert("Error al registrar evento")
@@ -115,6 +117,8 @@ export class EventComponent implements OnInit {
           this.messageService.add({ severity: 'info', summary: 'Confirmacion', detail: 'Evento eliminado' });
           window.location.reload();
         })
+      }, reject: () => {
+        window.location.reload()
       }
     });
   }
@@ -129,6 +133,8 @@ export class EventComponent implements OnInit {
           this.messageService.add({ severity: 'info', summary: 'Confirmacion', detail: 'Evento finalizado' });
           window.location.reload();
         })
+      }, reject: () => {
+        window.location.reload()
       }
     });
   }
@@ -147,6 +153,8 @@ export class EventComponent implements OnInit {
           this.messageService.add({ severity: 'info', summary: 'Confirmacion', detail: 'Participacion registrada' });
           window.location.reload();
         })
+      }, reject: () => {
+        window.location.reload()
       }
     });
   }
@@ -164,6 +172,8 @@ export class EventComponent implements OnInit {
           this.messageService.add({ severity: 'info', summary: 'Confirmacion', detail: 'Participacion removida' });
           window.location.reload();
         })
+      }, reject: () => {
+        window.location.reload()
       }
     });
   }
@@ -171,5 +181,10 @@ export class EventComponent implements OnInit {
   verifyIfExist(event: any): boolean {
    let verify = this.eventUserParticipate.find((x) => x.eventId === event.id);
     return verify !== undefined ? true : false;
+  }
+
+  logout() {
+   localStorage.removeItem('user');
+   this.router.navigate(['/'])
   }
 }

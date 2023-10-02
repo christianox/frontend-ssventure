@@ -1,21 +1,30 @@
+<div class="container d-flex justify-content-center">
 <form [formGroup]="form">
-  <div class="card flex justify-content-center">
-    <span class="p-float-label">
-          <input pInputText id="fullname" formControlName="fullName" />
+  <div class="card d-flex justify-content-center align-items-center" [style]="{ width: '400px'}">
+
+    <h3 class="mt-4">Registro de usuario</h3>
+
+    <span class="p-float-label mb-4 mt-4" [style]="{ width: '90%'}">
+          <input pInputText id="fullname" formControlName="fullName" [style]="{ width: '100%'}"/>
           <label htmlFor="fullname">Nombre Completo</label>
         </span>
-    <span class="p-float-label">
-          <input pInputText id="username" formControlName="userName" />
+    <span class="p-float-label mb-4" [style]="{ width: '90%'}">
+          <input pInputText id="username" formControlName="userName" [style]="{ width: '100%'}"/>
           <label htmlFor="username">Usuario</label>
         </span>
-    <span class="p-float-label">
-          <input pInputText id="email" formControlName="email" />
+    <span class="p-float-label mb-4" [style]="{ width: '90%'}">
+          <input pInputText id="email" formControlName="email" [style]="{ width: '100%'}"/>
           <label htmlFor="email">Correo electronico</label>
         </span>
-    <span class="p-float-label">
-        <p-password formControlName="usrPass" [feedback]="false" [toggleMask]="true"></p-password>
+    <span class="p-float-label mb-4" [style]="{ width: '90%'}">
+        <input pInputText type="password" formControlName="usrPass" [style]="{ width: '100%'}"/>
         <label>Contraseña</label>
     </span>
-    <p-button label="Registrar" [loading]="loading" (click)="submit()"></p-button>
+    <div [style]="{ width: '90%'}">
+    <p-button label="Registrar" styleClass="mb-3" [loading]="loading" (click)="submit()" [style]="{ width: '100%'}"></p-button>
+    <p-button label="Volver atras" styleClass="mb-3 p-button-warning" [loading]="loading" (click)="backPage()" [style]="{ width: '100%'}"></p-button>
+      <p-toast></p-toast>
+    </div>
   </div>
 </form>
+</div>

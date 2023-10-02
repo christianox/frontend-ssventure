@@ -1,25 +1,26 @@
 <form [formGroup]="form">
-<div class="container">
-  <div class="card flex justify-content-center">
-    <p-card header="Inicio de Sesion" [style]="{ width: '360px' }">
+<div class="container flex justify-content-center align-items-center" style="height: 100vh">
+  <div class="d-flex justify-content-center align-items-center">
+    <p-card header="Inicio de sesión" [style]="{ width: '360px', 'text-align': 'center' }">
       <ng-template pTemplate="header">
         <img alt="Card" src="assets/login.png" />
       </ng-template>
 
-        <span class="p-float-label">
-          <input pInputText id="username" formControlName="email" />
-          <label htmlFor="username">Correo electronico</label>
+        <span class="p-float-label mb-4">
+          <input pInputText id="username" formControlName="email" class="btnStyle"/>
+          <label htmlFor="username">Correo electrónico</label>
         </span>
 
         <span class="p-float-label">
-        <p-password formControlName="usrPass" [feedback]="false" [toggleMask]="true"></p-password>
+          <input pInputText type="password" formControlName="usrPass" class="btnStyle"/>
         <label>Contraseña</label>
-    </span>
+        </span>
 
       <ng-template pTemplate="footer">
-        <p-button label="Ingresar" icon="pi pi-check" (onClick)="submit()"></p-button>
-        <p-button label="Registrar usuario" icon="pi pi-times" (onClick)="registerUser()" styleClass="p-button-secondary" [style]="{ 'margin-left': '.5em' }"></p-button>
+        <p-button label="Ingresar" icon="pi pi-check" styleClass="mb-3 w-100" (onClick)="submit()"></p-button>
+        <p-button label="Registrar usuario" icon="pi pi-times" (onClick)="registerUser()" styleClass="p-button-secondary w-100"></p-button>
       </ng-template>
+      <p-toast></p-toast>
     </p-card>
   </div>
 </div>

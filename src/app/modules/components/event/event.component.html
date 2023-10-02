@@ -2,9 +2,10 @@
   <div class="card" *ngIf="!showForm">
     <p-table [value]="eventList" [tableStyle]="{'min-width': '60rem'}">
       <ng-template pTemplate="caption">
-        <div class="flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center justify-content-between">
           Eventos Actuales
           <p-button label="Registrar evento" styleClass="p-button-help" (onClick)="openForm()"></p-button>
+          <p-button label="Cerrar sesion" styleClass="p-button-info" (onClick)="logout()"></p-button>
         </div>
       </ng-template>
       <ng-template pTemplate="header">
@@ -28,11 +29,8 @@
             <div *ngIf="event.isFinish > 0">
               <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
               <p-button label="Participar" *ngIf="event.userCreatorId !== userSession.id && !this.verifyIfExist(event)" styleClass="p-button-success" (onClick)="confirmSubscribe(event)"></p-button>
-              <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
               <p-button label="Dejar de participar" *ngIf="event.userCreatorId !== userSession.id && this.verifyIfExist(event)" styleClass="p-button-info" (onClick)="removeSubscribe(event)"></p-button>
-            <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
             <p-button label="Cerrar Evento" (onClick)="confirmDelete(event)" *ngIf="event.userCreatorId === userSession.id" styleClass="p-button-danger"></p-button>
-            <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
             <p-button label="Finalizar Evento" (onClick)="finishEvent(event)" *ngIf="event.userCreatorId === userSession.id" styleClass="p-button-warning"></p-button>
             </div>
           </td>
@@ -41,22 +39,28 @@
     </p-table>
   </div>
 
-  <div *ngIf="showForm">
+  <div *ngIf="showForm" class="container d-flex justify-content-center">
     <form [formGroup]="form">
-    <div class="card flex justify-content-center">
-    <span class="p-float-label">
-          <input pInputText id="eventName" formControlName="eventName" />
+      <div class="card d-flex justify-content-center align-items-center" [style]="{ width: '400px'}">
+    <h3 class="mt-3">Registrar evento</h3>
+    <span class="p-float-label mb-4 mt-4" [style]="{ width: '90%'}">
+          <input pInputText id="eventName" formControlName="eventName" [style]="{ width: '100%'}"/>
           <label>Nombre del evento</label>
         </span>
-      <label htmlFor="username">Fecha del evento</label>
-      <p-calendar formControlName="dateOfEvent" [showIcon]="true"></p-calendar>
-      <span class="p-float-label">
-          <input pInputText id="detail" formControlName="detail" />
+        <span class="mb-4" [style]="{ width: '90%'}">
+        <label htmlFor="username">Fecha del evento</label>
+        <p-calendar formControlName="dateOfEvent" [showIcon]="true" [style]="{ width: '100%'}"></p-calendar>
+          </span>
+        <span class="p-float-label mb-4" [style]="{ width: '90%'}">
+          <input pInputText id="detail" formControlName="detail" [style]="{ width: '100%'}"/>
           <label htmlFor="detail">Detalle del evento</label>
         </span>
-      <p-button label="Registrar evento" [loading]="loading" (click)="submit()"></p-button>
-      <p-button label="Cancelar" (click)="closeForm()" styleClass="p-button-danger"></p-button>
-    </div>
+        <div [style]="{ width: '90%'}">
+        <p-button label="Registrar" styleClass="mb-3" [loading]="loading" (click)="submit()" [style]="{ width: '100%'}"></p-button>
+        <p-button label="Cancelar" (click)="closeForm()" styleClass="p-button-danger mb-3" [style]="{ width: '100%'}"></p-button>
+          <p-toast></p-toast>
+        </div>
+      </div>
     </form>
   </div>
 </div>

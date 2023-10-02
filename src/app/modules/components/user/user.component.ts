@@ -3,6 +3,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserI} from "../../../interfaces/User";
 import {UserService} from "../../../services/user.service";
 import {Router} from "@angular/router";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-user',
@@ -16,7 +17,8 @@ export class UserComponent implements OnInit{
 
   constructor(private formBuilder: FormBuilder,
               private router: Router,
-              private userService: UserService) {
+              private userService: UserService,
+              private messageService: MessageService) {
   }
 
   ngOnInit() {
@@ -63,17 +65,21 @@ export class UserComponent implements OnInit{
 
     this.userService.registerUser(data).subscribe((res:any) => {
       if (res.message === "Usuario registrado") {
-        alert(res.message)
-        this.router.navigate(['/']);
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: res.message });
+        setTimeout(() => {
+          this.router.navigate(['/']);
+        }, 3000);
       } else {
-        alert("Error al registrar")
-        this.cleanForm();
+        this.messageService.add({ severity: 'warning', summary: 'warning', detail: "Error al registrar" });
+        setTimeout(() => {
+          this.cleanForm();
+        }, 3000);
       }
       this.loading = false;
-    })
+    });
+  }
 
-    setTimeout(() => {
-      this.loading = false
-    }, 2000);
+  backPage(): void {
+    this.router.navigate(['/']);
   }
 }

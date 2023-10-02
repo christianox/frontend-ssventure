@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {UserService} from "../../../services/user.service";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,8 @@ export class LoginComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
               private router: Router,
-              private userService: UserService) {
+              private userService: UserService,
+              private messageService: MessageService) {
 
   }
 
@@ -43,10 +45,15 @@ export class LoginComponent implements OnInit {
     this.userService.authUser(data).subscribe((res: any) => {
       if (res.message === "Usuario encontrado") {
         localStorage.setItem('user',JSON.stringify(res.user));
-        this.router.navigate(['/event'])
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: res.message });
+        setTimeout(() => {
+          this.router.navigate(['/event']);
+        }, 1000);
       } else {
-        alert(res.message)
-        this.cleanForm();
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: res.message });
+        setTimeout(() => {
+          this.cleanForm();
+        }, 1000);
       }
     });
   }
