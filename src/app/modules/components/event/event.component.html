@@ -1,0 +1,62 @@
+<div>
+  <div class="card" *ngIf="!showForm">
+    <p-table [value]="eventList" [tableStyle]="{'min-width': '60rem'}">
+      <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-between">
+          Eventos Actuales
+          <p-button label="Registrar evento" styleClass="p-button-help" (onClick)="openForm()"></p-button>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Evento</th>
+          <th>Fecha de evento</th>
+          <th>Detalle</th>
+          <th>Participantes</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-event>
+        <tr>
+          <td>{{event.eventName}}</td>
+          <td>{{event.dateOfEvent | date: 'yyyy-MM-dd'}}</td>
+          <td>{{event.detail}}</td>
+          <td>{{event.participants}}</td>
+          <td>{{event.isFinish === 0 ? 'Finalizado' : 'Abierto'}}</td>
+          <td>
+            <div *ngIf="event.isFinish > 0">
+              <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
+              <p-button label="Participar" *ngIf="event.userCreatorId !== userSession.id && !this.verifyIfExist(event)" styleClass="p-button-success" (onClick)="confirmSubscribe(event)"></p-button>
+              <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
+              <p-button label="Dejar de participar" *ngIf="event.userCreatorId !== userSession.id && this.verifyIfExist(event)" styleClass="p-button-info" (onClick)="removeSubscribe(event)"></p-button>
+            <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
+            <p-button label="Cerrar Evento" (onClick)="confirmDelete(event)" *ngIf="event.userCreatorId === userSession.id" styleClass="p-button-danger"></p-button>
+            <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
+            <p-button label="Finalizar Evento" (onClick)="finishEvent(event)" *ngIf="event.userCreatorId === userSession.id" styleClass="p-button-warning"></p-button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <div *ngIf="showForm">
+    <form [formGroup]="form">
+    <div class="card flex justify-content-center">
+    <span class="p-float-label">
+          <input pInputText id="eventName" formControlName="eventName" />
+          <label>Nombre del evento</label>
+        </span>
+      <label htmlFor="username">Fecha del evento</label>
+      <p-calendar formControlName="dateOfEvent" [showIcon]="true"></p-calendar>
+      <span class="p-float-label">
+          <input pInputText id="detail" formControlName="detail" />
+          <label htmlFor="detail">Detalle del evento</label>
+        </span>
+      <p-button label="Registrar evento" [loading]="loading" (click)="submit()"></p-button>
+      <p-button label="Cancelar" (click)="closeForm()" styleClass="p-button-danger"></p-button>
+    </div>
+    </form>
+  </div>
+</div>
