@@ -96,7 +96,9 @@ export class EventComponent implements OnInit {
      if (res.message === "Evento registrado") {
        this.messageService.add({ severity: 'success', summary: 'Success', detail: res.message });
        setTimeout(() => {
-         window.location.reload();
+         this.onLoadEvents();
+         this.onLoadEventsParticipant();
+         this.cleanForm();
          }, 1000);
        this.showForm = false;
      } else {
@@ -115,10 +117,12 @@ export class EventComponent implements OnInit {
       accept: () => {
         this.eventService.deleteEvent(event.id).subscribe((res) => {
           this.messageService.add({ severity: 'info', summary: 'Confirmacion', detail: 'Evento eliminado' });
-          window.location.reload();
+          this.onLoadEvents();
+          this.onLoadEventsParticipant();
         })
       }, reject: () => {
-        window.location.reload()
+        this.onLoadEvents();
+        this.onLoadEventsParticipant();
       }
     });
   }
@@ -131,10 +135,12 @@ export class EventComponent implements OnInit {
       accept: () => {
         this.eventService.finishEvent(event.id).subscribe((res) => {
           this.messageService.add({ severity: 'info', summary: 'Confirmacion', detail: 'Evento finalizado' });
-          window.location.reload();
+          this.onLoadEvents();
+          this.onLoadEventsParticipant();
         })
       }, reject: () => {
-        window.location.reload()
+        this.onLoadEvents();
+        this.onLoadEventsParticipant();
       }
     });
   }
@@ -151,10 +157,12 @@ export class EventComponent implements OnInit {
         }
         this.eventService.subscribeEvent(data).subscribe((res) => {
           this.messageService.add({ severity: 'info', summary: 'Confirmacion', detail: 'Participacion registrada' });
-          window.location.reload();
+          this.onLoadEvents();
+          this.onLoadEventsParticipant();
         })
       }, reject: () => {
-        window.location.reload()
+        this.onLoadEvents();
+        this.onLoadEventsParticipant();
       }
     });
   }
@@ -170,10 +178,12 @@ export class EventComponent implements OnInit {
         }
         this.eventService.unSubscribeEvent(data, event.id).subscribe((res) => {
           this.messageService.add({ severity: 'info', summary: 'Confirmacion', detail: 'Participacion removida' });
-          window.location.reload();
+          this.onLoadEvents();
+          this.onLoadEventsParticipant();
         })
       }, reject: () => {
-        window.location.reload()
+        this.onLoadEvents();
+        this.onLoadEventsParticipant();
       }
     });
   }
